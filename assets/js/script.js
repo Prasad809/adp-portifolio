@@ -157,3 +157,12 @@ for (let i = 0; i < navigationLinks.length; i++) {
 
   });
 }
+
+function downloadResume() {
+    const link = document.createElement("a");
+    link.href = "./assets/DurgaPrasadAmballa.pdf";
+    link.download = "DurgaPrasadResume.pdf";
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
