@@ -166,3 +166,61 @@ function downloadResume() {
     link.click();
     document.body.removeChild(link);
 }
+
+
+
+// theme switcher (dark / light / ocean)
+(function () {
+
+  const THEME_KEY = "adp-portfolio-theme";
+  const root = document.documentElement;
+  const themeButtons = document.querySelectorAll("[data-theme-btn]");
+
+  const applyTheme = function (theme) {
+    root.setAttribute("data-theme", theme);
+
+    themeButtons.forEach(function (btn) {
+      btn.classList.toggle("active", btn.dataset.themeBtn === theme);
+    });
+
+    try { localStorage.setItem(THEME_KEY, theme); } catch (e) { /* storage unavailable */ }
+  };
+
+  // restore saved theme, fall back to the visitor's system preference
+  let savedTheme = null;
+  try { savedTheme = localStorage.getItem(THEME_KEY); } catch (e) { /* storage unavailable */ }
+
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  } else if (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches) {
+    applyTheme("light");
+  } else {
+    applyTheme("dark");
+  }
+
+  themeButtons.forEach(function (btn) {
+    btn.addEventListener("click", function () { applyTheme(this.dataset.themeBtn); });
+  });
+
+})();
+
+
+
+// back to top button
+(function () {
+
+  const backTopBtn = document.querySelector("[data-back-top-btn]");
+  if (!backTopBtn) return;
+
+  const toggleBackTopBtn = function () {
+    backTopBtn.classList.toggle("active", window.scrollY > 400);
+  };
+
+  window.addEventListener("scroll", toggleBackTopBtn);
+  toggleBackTopBtn();
+
+  backTopBtn.addEventListener("click", function () {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+})();
